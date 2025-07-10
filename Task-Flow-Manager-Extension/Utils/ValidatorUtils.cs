@@ -65,4 +65,11 @@ public static class ValidatorUtils
         if (start.HasValue && end.HasValue && end < start)
             throw new ValidationException(endFieldName, $"{endFieldName} cannot be earlier than {startFieldName}.");
     }
+    
+    public static void MinValue(decimal value, decimal min, string fieldName)
+    {
+        if (value < min)
+            throw new ValidationException(fieldName, $"{fieldName} must be at least {min}.");
+    }
+
 }
