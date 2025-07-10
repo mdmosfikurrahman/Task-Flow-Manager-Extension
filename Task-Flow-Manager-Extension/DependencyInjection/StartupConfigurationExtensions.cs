@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
-using Task_Flow_Extension.Data;
+using Task_Flow_Manager_Extension.Data;
 using Task_Flow_Manager_Extension.Infrastructure.Config;
 
 namespace Task_Flow_Manager_Extension.DependencyInjection;
