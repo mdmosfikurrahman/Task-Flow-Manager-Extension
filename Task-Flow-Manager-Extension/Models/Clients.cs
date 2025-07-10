@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Task_Flow_Extension.Models;
+﻿namespace Task_Flow_Manager_Extension.Models;
 
 public partial class Clients
 {

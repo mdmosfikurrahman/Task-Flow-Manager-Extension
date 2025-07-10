@@ -26,7 +26,7 @@ public static class WebApplicationExtensions
         app.UseSwagger();
         app.UseSwaggerUI();
 
-        const string swaggerUrl = "http://localhost:8080/swagger/index.html";
+        const string swaggerUrl = "http://localhost:8081/swagger/index.html";
         _ = Task.Run(() => OpenBrowser(swaggerUrl));
     }
 

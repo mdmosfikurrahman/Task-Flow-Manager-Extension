@@ -21,10 +21,10 @@ public static class StartupConfigurationExtensions
 
     private static void ConfigureDatabase(this WebApplicationBuilder builder)
     {
-        var connectionString = builder.Configuration.GetConnectionString("TaskFlowManagerDb");
+        var connectionString = builder.Configuration.GetConnectionString("TaskFlowManagerExtensionDb");
         if (string.IsNullOrWhiteSpace(connectionString))
         {
-            throw new InvalidOperationException("Connection string 'TaskFlowManagerDb' is not configured.");
+            throw new InvalidOperationException("Connection string 'TaskFlowManagerExtensionDb' is not configured.");
         }
 
         builder.Services.AddDbContext<TaskFlowManagerExtensionDbContext>(options =>

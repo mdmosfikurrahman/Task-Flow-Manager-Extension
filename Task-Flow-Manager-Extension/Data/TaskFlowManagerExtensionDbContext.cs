@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Task_Flow_Extension.Models;
+using Task_Flow_Manager_Extension.Models;
 
 namespace Task_Flow_Manager_Extension.Data;
 
