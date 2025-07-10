@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Task_Flow_Manager_Extension.Grpc;
 using Task_Flow_Manager_Extension.Middlewares;
 
 namespace Task_Flow_Manager_Extension.DependencyInjection;
