@@ -16,7 +16,7 @@ public class ClientsServiceImpl(IClientsRepository repository) : IClientsService
         if (list.Count == 0)
             throw new NotFoundException("No clients found");
 
-        return list.ToResponseList<Clients, ClientResponse>();
+        return list.ToResponseList<Client, ClientResponse>();
     }
 
     public async Task<ClientResponse> GetById(long id)
@@ -25,15 +25,15 @@ public class ClientsServiceImpl(IClientsRepository repository) : IClientsService
         if (client == null)
             throw new NotFoundException($"Client not found with id: {id}");
 
-        return client.ToResponse<Clients, ClientResponse>();
+        return client.ToResponse<Client, ClientResponse>();
     }
 
     public async Task<ClientResponse> Create(ClientRequest request)
     {
         ClientRequestValidator.Validate(request);
-        var entity = request.ToEntity<ClientRequest, Clients>();
+        var entity = request.ToEntity<ClientRequest, Client>();
         var saved = await repository.SaveAsync(entity);
-        return saved.ToResponse<Clients, ClientResponse>();
+        return saved.ToResponse<Client, ClientResponse>();
     }
 
     public async Task<ClientResponse> Update(long id, ClientRequest request)
@@ -45,7 +45,7 @@ public class ClientsServiceImpl(IClientsRepository repository) : IClientsService
 
         request.MapToExisting(existing);
         var updated = await repository.SaveAsync(existing);
-        return updated.ToResponse<Clients, ClientResponse>();
+        return updated.ToResponse<Client, ClientResponse>();
     }
 
     public async Task Delete(long id)

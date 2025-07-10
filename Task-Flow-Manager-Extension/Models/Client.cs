@@ -1,6 +1,6 @@
 ﻿namespace Task_Flow_Manager_Extension.Models;
 
-public partial class Clients
+public partial class Client
 {
     public long Id { get; set; }
 
@@ -12,5 +12,5 @@ public partial class Clients
 
     public string? CompanyName { get; set; }
 
-    public virtual ICollection<Invoices> invoices { get; set; } = new List<Invoices>();
+    public virtual ICollection<Invoice> invoices { get; set; } = new List<Invoice>();
 }

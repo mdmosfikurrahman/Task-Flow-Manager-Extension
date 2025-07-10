@@ -9,6 +9,12 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="14.0.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.31.1" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.72.0">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="HotChocolate" Version="15.1.7" />
         <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.7" />
         <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="15.1.7" />
@@ -29,6 +35,10 @@
         </PackageReference>
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Protos\client_services.proto" GrpcServices="Server" />
     </ItemGroup>
 
 </Project>

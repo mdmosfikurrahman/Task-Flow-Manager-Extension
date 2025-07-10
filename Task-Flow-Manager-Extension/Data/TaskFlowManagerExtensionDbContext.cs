@@ -14,9 +14,9 @@ public partial class TaskFlowManagerExtensionDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Clients> Clients { get; set; }
+    public virtual DbSet<Client> Clients { get; set; }
 
-    public virtual DbSet<Invoices> Invoices { get; set; }
+    public virtual DbSet<Invoice> Invoices { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseMySql(
@@ -29,7 +29,7 @@ public partial class TaskFlowManagerExtensionDbContext : DbContext
             .UseCollation("utf8mb4_0900_ai_ci")
             .HasCharSet("utf8mb4");
 
-        modelBuilder.Entity<Clients>(entity =>
+        modelBuilder.Entity<Client>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
@@ -39,7 +39,7 @@ public partial class TaskFlowManagerExtensionDbContext : DbContext
             entity.Property(e => e.Phone).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<Invoices>(entity =>
+        modelBuilder.Entity<Invoice>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 

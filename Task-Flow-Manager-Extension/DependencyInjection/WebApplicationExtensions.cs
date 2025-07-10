@@ -10,6 +10,7 @@ public static class WebApplicationExtensions
         app.UseMiddlewares();
         app.UseSwaggerIfDevelopment();
         app.UseRoutingAndAuthorization();
+        app.MapGrpcService<ClientGrpcService>();
     }
 
     private static void UseMiddlewares(this WebApplication app)

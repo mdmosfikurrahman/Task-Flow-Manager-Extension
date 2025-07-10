@@ -17,6 +17,8 @@ public static class StartupConfigurationExtensions
         builder.ConfigureGraphQl();
         builder.ConfigureAppSettings();
         builder.Services.RegisterApplicationServices();
+        builder.Services.AddGrpc();
+
     }
 
     private static void ConfigureDatabase(this WebApplicationBuilder builder)

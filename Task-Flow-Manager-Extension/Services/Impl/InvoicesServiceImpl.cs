@@ -16,7 +16,7 @@ public class InvoicesServiceImpl(IInvoicesRepository repository) : IInvoicesServ
         if (list.Count == 0)
             throw new NotFoundException("No invoices found");
 
-        return list.ToResponseList<Invoices, InvoiceResponse>();
+        return list.ToResponseList<Invoice, InvoiceResponse>();
     }
 
     public async Task<InvoiceResponse> GetById(long id)
@@ -25,15 +25,15 @@ public class InvoicesServiceImpl(IInvoicesRepository repository) : IInvoicesServ
         if (invoice == null)
             throw new NotFoundException($"Invoice not found with id: {id}");
 
-        return invoice.ToResponse<Invoices, InvoiceResponse>();
+        return invoice.ToResponse<Invoice, InvoiceResponse>();
     }
 
     public async Task<InvoiceResponse> Create(InvoiceRequest request)
     {
         InvoiceRequestValidator.Validate(request);
-        var entity = request.ToEntity<InvoiceRequest, Invoices>();
+        var entity = request.ToEntity<InvoiceRequest, Invoice>();
         var saved = await repository.SaveAsync(entity);
-        return saved.ToResponse<Invoices, InvoiceResponse>();
+        return saved.ToResponse<Invoice, InvoiceResponse>();
     }
 
     public async Task<InvoiceResponse> Update(long id, InvoiceRequest request)
@@ -45,7 +45,7 @@ public class InvoicesServiceImpl(IInvoicesRepository repository) : IInvoicesServ
 
         request.MapToExisting(existing);
         var updated = await repository.SaveAsync(existing);
-        return updated.ToResponse<Invoices, InvoiceResponse>();
+        return updated.ToResponse<Invoice, InvoiceResponse>();
     }
 
     public async Task Delete(long id)

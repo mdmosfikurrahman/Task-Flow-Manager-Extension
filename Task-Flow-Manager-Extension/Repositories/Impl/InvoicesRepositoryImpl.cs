@@ -6,11 +6,11 @@ namespace Task_Flow_Manager_Extension.Repositories.Impl;
 
 public class InvoicesRepositoryImpl(TaskFlowManagerExtensionDbContext db) : IInvoicesRepository
 {
-    public async Task<List<Invoices>> FindAllAsync() => await db.Invoices.ToListAsync();
+    public async Task<List<Invoice>> FindAllAsync() => await db.Invoices.ToListAsync();
 
-    public async Task<Invoices?> FindByIdAsync(long id) => await db.Invoices.FirstOrDefaultAsync(i => i.Id == id);
+    public async Task<Invoice?> FindByIdAsync(long id) => await db.Invoices.FirstOrDefaultAsync(i => i.Id == id);
 
-    public async Task<Invoices> SaveAsync(Invoices entity)
+    public async Task<Invoice> SaveAsync(Invoice entity)
     {
         if (entity.Id == 0)
             await db.Invoices.AddAsync(entity);

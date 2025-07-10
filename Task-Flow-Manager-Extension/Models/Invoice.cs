@@ -1,6 +1,6 @@
 ﻿namespace Task_Flow_Manager_Extension.Models;
 
-public partial class Invoices
+public partial class Invoice
 {
     public long Id { get; set; }
 
@@ -14,5 +14,5 @@ public partial class Invoices
 
     public string? Notes { get; set; }
 
-    public virtual Clients Client { get; set; } = null!;
+    public virtual Client Client { get; set; } = null!;
 }
