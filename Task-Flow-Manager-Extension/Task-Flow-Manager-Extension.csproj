@@ -31,4 +31,14 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers\" />
+      <Folder Include="Dto\Request\" />
+      <Folder Include="Dto\Response\" />
+      <Folder Include="Repositories\Impl\" />
+      <Folder Include="Resolvers\" />
+      <Folder Include="Services\Impl\" />
+      <Folder Include="Validators\" />
+    </ItemGroup>
+
 </Project>

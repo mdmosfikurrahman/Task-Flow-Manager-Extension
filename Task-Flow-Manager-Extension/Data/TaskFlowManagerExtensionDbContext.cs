@@ -6,13 +6,13 @@ using Task_Flow_Extension.Models;
 
 namespace Task_Flow_Extension.Data;
 
-public partial class TaskFlowExtensionDbContext : DbContext
+public partial class TaskFlowManagerExtensionDbContext : DbContext
 {
-    public TaskFlowExtensionDbContext()
+    public TaskFlowManagerExtensionDbContext()
     {
     }
 
-    public TaskFlowExtensionDbContext(DbContextOptions<TaskFlowExtensionDbContext> options)
+    public TaskFlowManagerExtensionDbContext(DbContextOptions<TaskFlowManagerExtensionDbContext> options)
         : base(options)
     {
     }
