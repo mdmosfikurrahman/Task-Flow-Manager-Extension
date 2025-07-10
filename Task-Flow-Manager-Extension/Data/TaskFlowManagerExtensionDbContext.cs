@@ -14,12 +14,11 @@ public partial class TaskFlowManagerExtensionDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Clients> clients { get; set; }
+    public virtual DbSet<Clients> Clients { get; set; }
 
-    public virtual DbSet<Invoices> invoices { get; set; }
+    public virtual DbSet<Invoices> Invoices { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySql(
             "server=localhost;port=3306;user=root;password=root;database=TaskFlowManagerExtension",
             ServerVersion.Parse("8.0.40-mysql"));
