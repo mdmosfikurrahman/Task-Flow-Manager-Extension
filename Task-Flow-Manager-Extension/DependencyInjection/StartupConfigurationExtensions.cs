@@ -16,6 +16,7 @@ public static class StartupConfigurationExtensions
         builder.ConfigureMvcAndSwagger();
         builder.ConfigureGraphQl();
         builder.ConfigureAppSettings();
+        builder.ConfigureRedis();
         builder.Services.RegisterApplicationServices();
         builder.Services.AddGrpc();
 
@@ -94,4 +95,18 @@ public static class StartupConfigurationExtensions
     {
         builder.Services.Configure<SchemaSettings>(builder.Configuration.GetSection("SchemaSettings"));
     }
+    
+    private static void ConfigureRedis(this WebApplicationBuilder builder)
+    {
+        var redisConnection = builder.Configuration.GetConnectionString("Redis");
+        if (string.IsNullOrWhiteSpace(redisConnection))
+            throw new InvalidOperationException("Redis connection string is not configured.");
+
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = redisConnection;
+            options.InstanceName = "TaskFlow_";
+        });
+    }
+
 }

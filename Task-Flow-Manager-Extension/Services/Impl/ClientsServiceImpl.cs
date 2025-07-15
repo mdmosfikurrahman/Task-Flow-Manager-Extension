@@ -1,31 +1,40 @@
-﻿using Task_Flow_Manager_Extension.Dto.Request;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using Task_Flow_Manager_Extension.Dto.Request;
 using Task_Flow_Manager_Extension.Dto.Response;
 using Task_Flow_Manager_Extension.Exceptions;
 using Task_Flow_Manager_Extension.Mappers;
 using Task_Flow_Manager_Extension.Models;
 using Task_Flow_Manager_Extension.Repositories;
+using Task_Flow_Manager_Extension.Utils;
 using Task_Flow_Manager_Extension.Validators;
 
 namespace Task_Flow_Manager_Extension.Services.Impl;
 
-public class ClientsServiceImpl(IClientsRepository repository) : IClientsService
+public class ClientsServiceImpl(
+    IClientsRepository repository,
+    IDistributedCache cache) : IClientsService
 {
     public async Task<List<ClientResponse>> GetAll()
     {
-        var list = await repository.FindAllAsync();
-        if (list.Count == 0)
-            throw new NotFoundException("No clients found");
-
-        return list.ToResponseList<Client, ClientResponse>();
+        return await cache.GetOrSetAsync("clients_all", async () =>
+        {
+            var list = await repository.FindAllAsync();
+            if (list.Count == 0)
+                throw new NotFoundException("No clients found");
+            return list.ToResponseList<Client, ClientResponse>();
+        });
     }
 
     public async Task<ClientResponse> GetById(long id)
     {
-        var client = await repository.FindByIdAsync(id);
-        if (client == null)
-            throw new NotFoundException($"Client not found with id: {id}");
-
-        return client.ToResponse<Client, ClientResponse>();
+        string key = $"client_{id}";
+        return await cache.GetOrSetAsync(key, async () =>
+        {
+            var client = await repository.FindByIdAsync(id);
+            if (client == null)
+                throw new NotFoundException($"Client not found with id: {id}");
+            return client.ToResponse<Client, ClientResponse>();
+        });
     }
 
     public async Task<ClientResponse> Create(ClientRequest request)
@@ -33,6 +42,7 @@ public class ClientsServiceImpl(IClientsRepository repository) : IClientsService
         ClientRequestValidator.Validate(request);
         var entity = request.ToEntity<ClientRequest, Client>();
         var saved = await repository.SaveAsync(entity);
+        await cache.RemoveAsync("clients_all");
         return saved.ToResponse<Client, ClientResponse>();
     }
 
@@ -45,6 +55,10 @@ public class ClientsServiceImpl(IClientsRepository repository) : IClientsService
 
         request.MapToExisting(existing);
         var updated = await repository.SaveAsync(existing);
+
+        await cache.RemoveAsync("clients_all");
+        await cache.RemoveAsync($"client_{id}");
+
         return updated.ToResponse<Client, ClientResponse>();
     }
 
@@ -54,5 +68,8 @@ public class ClientsServiceImpl(IClientsRepository repository) : IClientsService
             throw new NotFoundException($"Client not found with id: {id}");
 
         await repository.DeleteByIdAsync(id);
+        await cache.RemoveAsync("clients_all");
+        await cache.RemoveAsync($"client_{id}");
     }
+
 }
