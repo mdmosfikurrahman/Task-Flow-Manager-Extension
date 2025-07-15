@@ -12,7 +12,7 @@ namespace Task_Flow_Manager_Extension.Services.Impl;
 
 public class ClientsServiceImpl(
     IClientsRepository repository,
-    IDistributedCache cache) : IClientsService
+    IDistributedCache cache) : IClientsService, ICacheWarmable
 {
     public async Task<List<ClientResponse>> GetAll()
     {
@@ -42,8 +42,13 @@ public class ClientsServiceImpl(
         ClientRequestValidator.Validate(request);
         var entity = request.ToEntity<ClientRequest, Client>();
         var saved = await repository.SaveAsync(entity);
-        await cache.RemoveAsync("clients_all");
-        return saved.ToResponse<Client, ClientResponse>();
+        var response = saved.ToResponse<Client, ClientResponse>();
+
+        await cache.SetAsync($"client_{response.Id}", response);
+        var all = await repository.FindAllAsync();
+        await cache.SetAsync("clients_all", all.ToResponseList<Client, ClientResponse>());
+
+        return response;
     }
 
     public async Task<ClientResponse> Update(long id, ClientRequest request)
@@ -55,11 +60,13 @@ public class ClientsServiceImpl(
 
         request.MapToExisting(existing);
         var updated = await repository.SaveAsync(existing);
+        var response = updated.ToResponse<Client, ClientResponse>();
 
-        await cache.RemoveAsync("clients_all");
-        await cache.RemoveAsync($"client_{id}");
+        await cache.SetAsync($"client_{id}", response);
+        var all = await repository.FindAllAsync();
+        await cache.SetAsync("clients_all", all.ToResponseList<Client, ClientResponse>());
 
-        return updated.ToResponse<Client, ClientResponse>();
+        return response;
     }
 
     public async Task Delete(long id)
@@ -68,8 +75,24 @@ public class ClientsServiceImpl(
             throw new NotFoundException($"Client not found with id: {id}");
 
         await repository.DeleteByIdAsync(id);
-        await cache.RemoveAsync("clients_all");
+
         await cache.RemoveAsync($"client_{id}");
+        var all = await repository.FindAllAsync();
+        await cache.SetAsync("clients_all", all.ToResponseList<Client, ClientResponse>());
     }
 
+    public string EntityName => "Clients";
+    public async Task<int> RefreshCache()
+    {
+        var list = await repository.FindAllAsync();
+        var responseList = list.ToResponseList<Client, ClientResponse>();
+
+        await cache.SetAsync("clients_all", responseList);
+        foreach (var client in responseList)
+        {
+            await cache.SetAsync($"client_{client.Id}", client);
+        }
+
+        return responseList.Count;
+    }
 }
