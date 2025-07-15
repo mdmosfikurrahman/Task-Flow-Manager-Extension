@@ -18,10 +18,10 @@ public static class ServiceRegistrationExtensions
 
         foreach (var implementationType in serviceTypes)
         {
-            var interfaceType = implementationType.GetInterfaces()
-                .FirstOrDefault(i => i.Name == $"I{implementationType.Name.Replace("Impl", "")}");
+            var interfaceTypes = implementationType.GetInterfaces()
+                .Where(i => i.Namespace == "Task_Flow_Manager_Extension.Services");
 
-            if (interfaceType != null)
+            foreach (var interfaceType in interfaceTypes)
             {
                 services.AddScoped(interfaceType, implementationType);
             }
@@ -30,8 +30,8 @@ public static class ServiceRegistrationExtensions
         services.AddOptions()
             .Configure<JsonSerializerOptions>(options => { options.PropertyNameCaseInsensitive = true; });
 
-        // Register HTTP client
         services.AddHttpClient();
         services.AddHttpContextAccessor();
     }
+
 }

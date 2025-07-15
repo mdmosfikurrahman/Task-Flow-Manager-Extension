@@ -105,7 +105,6 @@ public static class StartupConfigurationExtensions
         builder.Services.AddStackExchangeRedisCache(options =>
         {
             options.Configuration = redisConnection;
-            options.InstanceName = "TaskFlow_";
         });
     }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Task_Flow_Manager_Extension.Infrastructure.Dto;
 using Task_Flow_Manager_Extension.Services;
 
@@ -26,4 +27,12 @@ public class CacheController(IEnumerable<ICacheWarmable> cacheWarmables) : Contr
             result
         );
     }
+    
+    [HttpGet("peek/{key}")]
+    public async Task<string> PeekCache(string key, [FromServices] IDistributedCache cache)
+    {
+        var value = await cache.GetStringAsync(key);
+        return value ?? "(null)";
+    }
+
 }
