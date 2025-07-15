@@ -28,12 +28,15 @@ public static class CacheUtils
 
     public static async Task SetAsync<T>(this IDistributedCache cache, string key, T value, TimeSpan? expiration = null)
     {
+        await cache.RemoveAsync(key);
+
         var serialized = JsonSerializer.Serialize(value);
         await cache.SetStringAsync(key, serialized, new DistributedCacheEntryOptions
         {
             AbsoluteExpirationRelativeToNow = expiration ?? TimeSpan.FromMinutes(5)
         });
     }
+
 
     public static async Task<T?> GetAsync<T>(this IDistributedCache cache, string key)
     {
